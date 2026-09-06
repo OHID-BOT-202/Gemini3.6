@@ -1,171 +1,2244 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TikTok Downloader</title><style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OHID AI</title>
+
+<style>
+*{box-sizing:border-box}
 
 body{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-family:Arial,sans-serif;
-  background:#050505;
-  color:#fff;
+margin:0;
+min-height:100vh;
+background:#000;
+color:#fff;
+font-family:Arial,sans-serif;
+overflow:hidden;
 }
 
-.box{
-  width:92%;
-  max-width:430px;
-  padding:28px 22px;
-  border-radius:24px;
-  background:#101010;
-  border:2px solid #00f2ea;
-  box-shadow:
-    0 0 15px #00f2ea,
-    0 0 30px #ff0050;
+body:before{
+content:"";
+position:fixed;
+inset:-50%;
+z-index:-5;
+background:
+radial-gradient(circle at 20% 20%,#ff004055,transparent 28%),
+radial-gradient(circle at 80% 30%,#00ffff44,transparent 28%),
+radial-gradient(circle at 50% 80%,#8b00ff44,transparent 30%);
+filter:blur(35px);
+animation:bg 15s linear infinite;
 }
 
-h1{
-  text-align:center;
-  margin-bottom:8px;
-  font-size:30px;
+@keyframes bg{
+0%{transform:rotate(0) scale(1)}
+50%{transform:rotate(180deg) scale(1.15)}
+100%{transform:rotate(360deg) scale(1)}
 }
 
-h1 .t1{
-  color:#00f2ea;
-  text-shadow:0 0 10px #00f2ea;
+.app{
+width:100%;
+max-width:520px;
+height:100vh;
+margin:auto;
+background:#050505;
+position:relative;
 }
 
-h1 .t2{
-  color:#ff0050;
-  text-shadow:0 0 10px #ff0050;
+/* RGB LINE */
+
+.rgbLine{
+height:2px;
+background:linear-gradient(
+90deg,
+red,magenta,purple,cyan,lime,yellow,red
+);
+background-size:400%;
+animation:rgb 6s linear infinite;
 }
 
-p{
-  text-align:center;
-  color:#aaa;
-  font-size:13px;
-  margin-bottom:22px;
+@keyframes rgb{
+0%{background-position:0%}
+100%{background-position:400%}
 }
 
-input{
-  width:100%;
-  padding:15px;
-  border-radius:12px;
-  border:1px solid #444;
-  outline:none;
-  background:#181818;
-  color:white;
-  font-size:14px;
+/* LOGIN */
+
+#auth{
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
 }
 
-input:focus{
-  border-color:#00f2ea;
-  box-shadow:0 0 10px #00f2ea;
+.authBox{
+width:100%;
+padding:28px 23px;
+border-radius:22px;
+background:#080808;
+border:1px solid #222;
+box-shadow:0 0 35px #00ffff18;
 }
 
-button{
-  width:100%;
-  margin-top:14px;
-  padding:15px;
-  border:0;
-  border-radius:12px;
-  background:linear-gradient(90deg,#00f2ea,#ff0050);
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
+.logo{
+text-align:center;
+font-size:38px;
+font-weight:900;
+letter-spacing:3px;
+text-shadow:
+0 0 8px cyan,
+0 0 20px cyan;
 }
 
-button:active{
-  transform:scale(.97);
+.sub{
+text-align:center;
+color:#777;
+font-size:13px;
+margin:7px 0 28px;
 }
 
-#status{
-  text-align:center;
-  margin-top:18px;
-  min-height:20px;
-  font-size:13px;
-  color:#aaa;
+input,textarea{
+width:100%;
+background:#0b0b0b;
+border:1px solid #333;
+color:white;
+outline:none;
+border-radius:12px;
+padding:13px;
+font-size:14px;
+margin-bottom:12px;
 }
-</style></head><body><div class="box">  <h1>
-    <span class="t1">Tik</span><span class="t2">Tok</span>
-  </h1>  <p>Paste a public TikTok video link</p><input
-id="url"
+
+input:focus,textarea:focus{
+border-color:#00ffff;
+box-shadow:0 0 12px #00ffff33;
+}
+
+.mainBtn{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid cyan;
+background:#0b0b0b;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.switch{
+text-align:center;
+font-size:13px;
+color:#777;
+margin-top:17px;
+cursor:pointer;
+}
+
+.switch span{
+color:#00ffff;
+}
+
+.error{
+height:18px;
+text-align:center;
+color:#ff4567;
+font-size:12px;
+}
+
+/* CHAT */
+
+#chat{
+display:none;
+height:100%;
+position:relative;
+}
+
+.header{
+height:65px;
+display:flex;
+align-items:center;
+gap:11px;
+padding:9px 12px;
+background:#050505;
+border-bottom:1px solid #222;
+}
+
+.avatar{
+width:44px;
+height:44px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid cyan;
+box-shadow:0 0 12px cyan;
+}
+
+.headInfo{
+flex:1;
+}
+
+.headTitle{
+font-size:17px;
+font-weight:bold;
+}
+
+.online{
+font-size:11px;
+color:#00ff88;
+margin-top:2px;
+}
+
+.menuBtn{
+background:none;
+border:0;
+color:white;
+font-size:24px;
+cursor:pointer;
+}
+
+.menu{
+display:none;
+position:absolute;
+top:58px;
+right:10px;
+width:190px;
+background:#080808;
+border:1px solid cyan;
+border-radius:14px;
+padding:8px;
+z-index:50;
+box-shadow:0 0 20px #00ffff22;
+}
+
+.menu button{
+width:100%;
+padding:12px;
+border:0;
+border-radius:9px;
+background:#111;
+color:white;
+text-align:left;
+margin:2px 0;
+cursor:pointer;
+}
+
+.messages{
+height:calc(100% - 132px);
+overflow-y:auto;
+padding:14px 11px 20px;
+scroll-behavior:smooth;
+}
+
+.msg{
+max-width:86%;
+padding:10px 13px;
+border-radius:15px;
+margin:8px 0;
+font-size:14px;
+line-height:1.5;
+white-space:pre-wrap;
+word-break:break-word;
+}
+
+.userMsg{
+margin-left:auto;
+border:1px solid cyan;
+background:transparent;
+box-shadow:0 0 10px #00ffff22;
+}
+
+.botMsg{
+margin-right:auto;
+border:1px solid #ff00aa;
+background:transparent;
+box-shadow:0 0 10px #ff00aa22;
+}
+
+.msg img{
+max-width:100%;
+border-radius:10px;
+display:block;
+margin-bottom:6px;
+}
+
+.time{
+font-size:9px;
+color:#666;
+margin-top:5px;
+}
+
+.typing{
+display:none;
+width:max-content;
+padding:8px 12px;
+border-radius:14px;
+border:1px solid #333;
+color:#777;
+margin:7px 0;
+}
+
+.typing b{
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%,100%{opacity:.2}
+50%{opacity:1}
+}
+
+/* CHAT INPUT */
+
+.inputArea{
+height:67px;
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+gap:6px;
+align-items:center;
+padding:8px;
+background:#050505f5;
+border-top:1px solid #222;
+}
+
+.inputArea textarea{
+height:45px;
+min-height:45px;
+max-height:90px;
+margin:0;
+resize:none;
+}
+
+.icon{
+width:44px;
+height:44px;
+border-radius:11px;
+border:1px solid #444;
+background:#0b0b0b;
+color:white;
+font-size:19px;
+cursor:pointer;
+}
+
+.send{
+width:48px;
+height:44px;
+border-radius:11px;
+border:1px solid cyan;
+background:#0b0b0b;
+color:white;
+font-size:19px;
+cursor:pointer;
+}
+
+/* PHOTO PREVIEW */
+
+.chatPhoto{
+display:none;
+position:absolute;
+bottom:73px;
+left:9px;
+width:145px;
+padding:5px;
+border:1px solid cyan;
+background:#070707;
+border-radius:12px;
+z-index:10;
+}
+
+.chatPhoto img{
+width:100%;
+border-radius:8px;
+}
+
+.remove{
+position:absolute;
+top:3px;
+right:3px;
+width:21px;
+height:21px;
+border:0;
+border-radius:50%;
+background:red;
+color:white;
+}
+
+/* REFINE */
+
+#refine{
+display:none;
+height:100%;
+overflow-y:auto;
+padding:15px;
+}
+
+.panel{
+background:#080808;
+border-radius:20px;
+padding:18px;
+}
+
+.back{
+padding:9px 13px;
+border-radius:10px;
+background:#111;
+border:1px solid #444;
+color:white;
+margin-bottom:15px;
+}
+
+.refTitle{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+text-shadow:0 0 15px cyan;
+}
+
+.refSub{
+text-align:center;
+color:#777;
+margin:6px 0 20px;
+}
+
+.upload{
+min-height:210px;
+border:2px dashed #444;
+border-radius:16px;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+cursor:pointer;
+background:#0a0a0a;
+}
+
+.uploadText{
+text-align:center;
+color:#777;
+line-height:1.8;
+}
+
+.uploadText b{
+display:block;
+font-size:45px;
+}
+
+#refPreview{
+display:none;
+max-width:100%;
+max-height:350px;
+object-fit:contain;
+}
+
+#refFile{
+display:none;
+}
+
+.refBtn{
+width:100%;
+padding:14px;
+margin-top:10px;
+border-radius:12px;
+border:1px solid cyan;
+background:#0b0b0b;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.status{
+text-align:center;
+color:#888;
+font-size:13px;
+min-height:22px;
+margin-top:12px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:8px;
+border:1px solid #333;
+border-radius:15px;
+}
+
+.resultTitle{
+text-align:center;
+color:#00ffff;
+margin:7px;
+}
+
+#resultImg{
+width:100%;
+border-radius:10px;
+display:block;
+}
+
+.download{
+display:block;
+text-align:center;
+padding:13px;
+margin-top:10px;
+border:1px solid cyan;
+border-radius:11px;
+color:white;
+text-decoration:none;
+}
+
+/* PROFILE */
+
+#profile{
+display:none;
+height:100%;
+overflow-y:auto;
+padding:18px;
+}
+
+.profileBox{
+background:#080808;
+padding:20px;
+border-radius:20px;
+}
+
+.profilePic{
+width:105px;
+height:105px;
+display:block;
+margin:12px auto 20px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid cyan;
+box-shadow:0 0 18px #00ffff44;
+}
+
+.profileTitle{
+text-align:center;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+width:4px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#333;
+border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="rgbLine"></div>
+
+<!-- ================= AUTH ================= -->
+
+<section id="auth">
+
+<div class="authBox">
+
+<div class="logo">OHID</div>
+
+<div class="sub">
+Welcome to OHID AI
+</div>
+
+
+<!-- LOGIN -->
+
+<div id="loginForm">
+
+<input
+id="loginUser"
+placeholder="Username"
+autocomplete="username"
+>
+
+<input
+id="loginPass"
+type="password"
+placeholder="Password"
+autocomplete="current-password"
+>
+
+<div class="error" id="loginError"></div>
+
+<button class="mainBtn" onclick="login()">
+🚀 LOGIN
+</button>
+
+<div class="switch" onclick="showRegister()">
+Don't have an account?
+<span>Create Account</span>
+</div>
+
+</div>
+
+
+<!-- REGISTER -->
+
+<div id="registerForm" style="display:none">
+
+<input
+id="regUser"
+placeholder="Username"
+>
+
+<input
+id="regEmail"
+type="email"
+placeholder="Email"
+>
+
+<input
+id="regPass"
+type="password"
+placeholder="Password"
+>
+
+<div class="error" id="regError"></div>
+
+<button class="mainBtn" onclick="register()">
+✨ CREATE ACCOUNT
+</button>
+
+<div class="switch" onclick="showLogin()">
+Already have an account?
+<span>Login</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CHAT ================= -->
+
+<section id="chat">
+
+<header class="header">
+
+<img
+class="avatar"
+id="avatar"
+src="https://i.ibb.co/G4sHV2cW/20260822-000544.jpg"
+>
+
+<div class="headInfo">
+
+<div class="headTitle">
+Ohid bby Ai
+</div>
+
+<div class="online">
+● Online now
+</div>
+
+</div>
+
+<button class="menuBtn" onclick="toggleMenu()">
+⋮
+</button>
+
+</header>
+
+
+<div class="menu" id="menu">
+
+<button onclick="openRefine()">
+🖼️ Refine AI
+</button>
+
+<button onclick="openProfile()">
+👤 Profile
+</button>
+
+<button onclick="clearChat()">
+🗑️ Clear Chat
+</button>
+
+<button onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
+
+
+<div class="messages" id="messages">
+
+<div
+class="typing"
+id="typing"
+>
+AI is typing <b>...</b>
+</div>
+
+</div>
+
+
+<div
+class="chatPhoto"
+id="chatPhoto"
+>
+
+<button
+class="remove"
+onclick="removeChatImage()"
+>
+×
+</button>
+
+<img id="chatPhotoImg">
+
+</div>
+
+
+<div class="inputArea">
+
+<button
+class="icon"
+onclick="document.getElementById('chatFile').click()"
+>
+📷
+</button>
+
+<input
+type="file"
+id="chatFile"
+accept="image/*"
+hidden
+>
+
+<textarea
+id="message"
+placeholder="Message Ohid bby Ai..."
+></textarea>
+
+<button
+class="send"
+onclick="sendMessage()"
+>
+➤
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= REFINE ================= -->
+
+<section id="refine">
+
+<div class="panel">
+
+<button
+class="back"
+onclick="backChat()"
+>
+← Back
+</button>
+
+<div class="refTitle">
+✨ Refine AI
+</div>
+
+<div class="refSub">
+AI Image Editor
+</div>
+
+
+<label class="upload" for="refFile">
+
+<div
+class="uploadText"
+id="refUploadText"
+>
+<b>🖼️</b>
+Tap here to select an image
+</div>
+
+<img id="refPreview">
+
+</label>
+
+<input
+type="file"
+id="refFile"
+accept="image/*"
+>
+
+
+<input
+id="refUrl"
 type="url"
-placeholder="https://www.tiktok.com/..."
+placeholder="Or paste public image URL"
+style="margin-top:14px"
+>
 
-«»
 
-  <button onclick="downloadTikTok()">
-    ⬇ Download Video
-  </button>  <div id="status"></div></div><script>
-async function downloadTikTok(){
+<textarea
+id="refPrompt"
+placeholder="Example: Change the shirt color to white"
+></textarea>
 
-  const input = document.getElementById("url");
-  const status = document.getElementById("status");
-  const url = input.value.trim();
 
-  if(!url){
-    status.innerHTML = "⚠️ TikTok video link দিন";
-    return;
-  }
+<button
+class="refBtn"
+id="refBtn"
+onclick="refineImage()"
+>
+✨ EDIT IMAGE
+</button>
 
-  if(!url.includes("tiktok.com")){
-    status.innerHTML = "❌ সঠিক TikTok link দিন";
-    return;
-  }
 
-  status.innerHTML = "⏳ Download শুরু করার চেষ্টা হচ্ছে...";
+<div
+class="status"
+id="refStatus"
+></div>
 
-  try{
 
-    /*
-      Browser সরাসরি TikTok page URL-কে
-      video file হিসেবে download করতে পারে না।
-      যদি URL সরাসরি একটি video file হয়,
-      তখন নিচের অংশ কাজ করবে।
-    */
+<div
+class="result"
+id="result"
+>
 
-    const response = await fetch(url, {
-      mode:"cors"
-    });
+<div class="resultTitle">
+✨ Edited Result
+</div>
 
-    if(!response.ok){
-      throw new Error("Download blocked");
-    }
+<img id="resultImg">
 
-    const blob = await response.blob();
+<a
+id="download"
+class="download"
+href="#"
+download="ohid-refined-image.png"
+>
+⬇️ Download Result
+</a>
 
-    if(!blob.type.startsWith("video")){
-      throw new Error("Not a video file");
-    }
+<button
+class="refBtn"
+onclick="sendResultToChat()"
+>
+💬 Send Result to Chat
+</button>
 
-    const blobUrl = URL.createObjectURL(blob);
+</div>
 
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = "tiktok-video.mp4";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+</div>
 
-    URL.revokeObjectURL(blobUrl);
+</section>
 
-    status.innerHTML = "✅ Download complete!";
 
-  }catch(error){
+<!-- ================= PROFILE ================= -->
 
-    status.innerHTML =
-      "❌ TikTok এই browser থেকে direct download allow করছে না.";
+<section id="profile">
 
-  }
+<div class="profileBox">
+
+<button
+class="back"
+onclick="backChat()"
+>
+← Back
+</button>
+
+<h2 class="profileTitle">
+👤 Profile
+</h2>
+
+<img
+class="profilePic"
+id="profilePic"
+src="https://i.ibb.co/G4sHV2cW/20260822-000544.jpg"
+>
+
+<input
+type="file"
+id="profilePhoto"
+accept="image/*"
+>
+
+<input
+id="pName"
+placeholder="Username"
+>
+
+<input
+id="pEmail"
+type="email"
+placeholder="Email"
+>
+
+<input
+id="pPassword"
+type="password"
+placeholder="New password"
+>
+
+<button
+class="mainBtn"
+onclick="saveProfile()"
+>
+💾 SAVE CHANGES
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+const GEMINI_API_KEY =
+"YOUR_GEMINI_API_KEY";
+
+const GEMINI_API =
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
++GEMINI_API_KEY;
+
+const REFINE_API =
+"https://smfahim.xyz/gedit";
+
+const DEFAULT_AVATAR =
+"https://i.ibb.co/G4sHV2cW/20260822-000544.jpg";
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentUser=null;
+
+let history=[];
+
+let chatImage="";
+
+let chatMime="";
+
+let refineImageData="";
+
+let refineMime="";
+
+let finalRefinedImage="";
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+function showRegister(){
+
+document.getElementById("loginForm").style.display="none";
+
+document.getElementById("registerForm").style.display="block";
+
 }
-</script></body>
+
+function showLogin(){
+
+document.getElementById("registerForm").style.display="none";
+
+document.getElementById("loginForm").style.display="block";
+
+}
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
+
+function register(){
+
+const username=
+document.getElementById("regUser").value.trim();
+
+const email=
+document.getElementById("regEmail").value.trim();
+
+const password=
+document.getElementById("regPass").value;
+
+const error=
+document.getElementById("regError");
+
+error.textContent="";
+
+
+if(!username||!email||!password){
+
+error.textContent="Fill all fields.";
+
+return;
+
+}
+
+if(password.length<6){
+
+error.textContent=
+"Password must be at least 6 characters.";
+
+return;
+
+}
+
+
+let users=
+JSON.parse(
+localStorage.getItem("ohid_users")||"{}"
+);
+
+
+const key=username.toLowerCase();
+
+
+if(users[key]){
+
+error.textContent=
+"Username already exists.";
+
+return;
+
+}
+
+
+users[key]={
+
+username:username,
+
+email:email,
+
+password:password,
+
+photo:DEFAULT_AVATAR
+
+};
+
+
+localStorage.setItem(
+"ohid_users",
+JSON.stringify(users)
+);
+
+
+alert("Account created successfully!");
+
+showLogin();
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(){
+
+const username=
+document.getElementById("loginUser").value.trim();
+
+const password=
+document.getElementById("loginPass").value;
+
+const error=
+document.getElementById("loginError");
+
+error.textContent="";
+
+
+let users=
+JSON.parse(
+localStorage.getItem("ohid_users")||"{}"
+);
+
+
+const user=
+users[username.toLowerCase()];
+
+
+if(!user||user.password!==password){
+
+error.textContent=
+"Invalid username or password.";
+
+return;
+
+}
+
+
+currentUser=user;
+
+localStorage.setItem(
+"ohid_current_user",
+user.username
+);
+
+
+startApp();
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startApp(){
+
+document.getElementById("auth").style.display="none";
+
+document.getElementById("chat").style.display="block";
+
+document.getElementById("refine").style.display="none";
+
+document.getElementById("profile").style.display="none";
+
+updateProfile();
+
+loadHistory();
+
+}
+
+
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
+
+(function(){
+
+const saved=
+localStorage.getItem("ohid_current_user");
+
+if(!saved)return;
+
+
+const users=
+JSON.parse(
+localStorage.getItem("ohid_users")||"{}"
+);
+
+
+const user=
+users[saved.toLowerCase()];
+
+
+if(user){
+
+currentUser=user;
+
+startApp();
+
+}
+
+})();
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function historyKey(){
+
+return "ohid_chat_"+
+currentUser.username.toLowerCase();
+
+}
+
+
+function loadHistory(){
+
+history=
+JSON.parse(
+localStorage.getItem(historyKey())||"[]"
+);
+
+
+const box=
+document.getElementById("messages");
+
+
+box.innerHTML=`
+<div class="typing" id="typing">
+AI is typing <b>...</b>
+</div>
+`;
+
+
+history.forEach(item=>{
+
+addMessage(
+item.text,
+item.type,
+item.image||""
+);
+
+});
+
+}
+
+
+function saveHistory(){
+
+localStorage.setItem(
+historyKey(),
+JSON.stringify(history)
+);
+
+}
+
+
+/* =====================================================
+   ADD MESSAGE
+===================================================== */
+
+function addMessage(
+text,
+type,
+image=""
+){
+
+const box=
+document.getElementById("messages");
+
+const div=
+document.createElement("div");
+
+
+div.className=
+"msg "+
+(type==="user"
+?"userMsg"
+:"botMsg");
+
+
+if(image){
+
+const img=
+document.createElement("img");
+
+img.src=image;
+
+div.appendChild(img);
+
+}
+
+
+if(text){
+
+const t=
+document.createElement("div");
+
+t.textContent=text;
+
+div.appendChild(t);
+
+}
+
+
+const time=
+document.createElement("div");
+
+time.className="time";
+
+time.textContent=
+new Date().toLocaleTimeString(
+[],
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+div.appendChild(time);
+
+
+const typing=
+document.getElementById("typing");
+
+box.insertBefore(div,typing);
+
+box.scrollTop=box.scrollHeight;
+
+}
+
+
+/* =====================================================
+   SEND CHAT
+===================================================== */
+
+async function sendMessage(){
+
+const input=
+document.getElementById("message");
+
+const text=
+input.value.trim();
+
+
+if(!text&&!chatImage)return;
+
+
+const image=chatImage;
+
+
+addMessage(
+text||"📷 Image",
+"user",
+image
+);
+
+
+history.push({
+
+text:text,
+
+type:"user",
+
+image:image,
+
+time:Date.now()
+
+});
+
+
+input.value="";
+
+removeChatImage();
+
+showTyping(true);
+
+
+try{
+
+const contents=[];
+
+
+history.slice(-20).forEach(item=>{
+
+const parts=[];
+
+
+if(item.text){
+
+parts.push({
+text:item.text
+});
+
+}
+
+
+if(item.image){
+
+const base64=
+item.image.split(",")[1];
+
+
+if(base64){
+
+parts.push({
+
+inline_data:{
+
+mime_type:
+item.image.match(
+/data:(.*?);base64/
+)?.[1]||"image/jpeg",
+
+data:base64
+
+}
+
+});
+
+}
+
+}
+
+
+if(parts.length){
+
+contents.push({
+
+role:
+item.type==="user"
+?"user"
+:"model",
+
+parts:parts
+
+});
+
+}
+
+});
+
+
+const body={
+
+system_instruction:{
+parts:[{
+text:
+"তুমি Ohid bby Ai নামের একটি বন্ধুসুলভ বাংলা AI assistant। সহজ, ভদ্র ও সংক্ষিপ্তভাবে উত্তর দাও। ছবি দিলে ছবিটি বুঝে উত্তর দাও।"
+}]
+},
+
+contents:contents,
+
+generationConfig:{
+temperature:.8,
+maxOutputTokens:700
+}
+
+};
+
+
+const response=
+await fetch(
+GEMINI_API,
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(body)
+}
+);
+
+
+if(!response.ok){
+
+throw new Error(
+await response.text()
+);
+
+}
+
+
+const data=
+await response.json();
+
+
+const answer=
+data.candidates?.[0]?.content?.parts
+?.map(x=>x.text||"")
+.join("")
+.trim();
+
+
+if(!answer){
+
+throw new Error(
+"No AI response"
+);
+
+}
+
+
+addMessage(
+answer,
+"bot"
+);
+
+
+history.push({
+
+text:answer,
+
+type:"bot",
+
+time:Date.now()
+
+});
+
+
+saveHistory();
+
+
+}catch(e){
+
+console.error(e);
+
+addMessage(
+"❌ AI response পাওয়া যায়নি। Gemini API key বা network connection check করো.",
+"bot"
+);
+
+}finally{
+
+showTyping(false);
+
+}
+
+}
+
+
+function showTyping(show){
+
+document.getElementById("typing").style.display=
+show?"block":"none";
+
+}
+
+
+/* =====================================================
+   CHAT PHOTO
+===================================================== */
+
+document
+.getElementById("chatFile")
+.addEventListener(
+"change",
+function(){
+
+const f=this.files[0];
+
+if(!f)return;
+
+
+if(!f.type.startsWith("image/")){
+
+alert("Please select an image.");
+
+return;
+
+}
+
+
+const reader=
+new FileReader();
+
+
+reader.onload=function(e){
+
+chatImage=e.target.result;
+
+chatMime=f.type;
+
+
+document.getElementById(
+"chatPhotoImg"
+).src=chatImage;
+
+
+document.getElementById(
+"chatPhoto"
+).style.display="block";
+
+};
+
+
+reader.readAsDataURL(f);
+
+});
+
+
+function removeChatImage(){
+
+chatImage="";
+
+chatMime="";
+
+document.getElementById(
+"chatFile"
+).value="";
+
+document.getElementById(
+"chatPhoto"
+).style.display="none";
+
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+function toggleMenu(){
+
+const menu=
+document.getElementById("menu");
+
+menu.style.display=
+menu.style.display==="block"
+?"none"
+:"block";
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearChat(){
+
+if(!confirm("Clear all chat history?"))return;
+
+history=[];
+
+localStorage.removeItem(historyKey());
+
+loadHistory();
+
+document.getElementById("menu").style.display="none";
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+localStorage.removeItem(
+"ohid_current_user"
+);
+
+location.reload();
+
+}
+
+
+/* =====================================================
+   REFINE
+===================================================== */
+
+function openRefine(){
+
+document.getElementById("menu").style.display="none";
+
+document.getElementById("chat").style.display="none";
+
+document.getElementById("profile").style.display="none";
+
+document.getElementById("refine").style.display="block";
+
+}
+
+
+function backChat(){
+
+document.getElementById("refine").style.display="none";
+
+document.getElementById("profile").style.display="none";
+
+document.getElementById("chat").style.display="block";
+
+}
+
+
+/* =====================================================
+   REFINE UPLOAD
+===================================================== */
+
+document
+.getElementById("refFile")
+.addEventListener(
+"change",
+function(){
+
+const f=this.files[0];
+
+if(!f)return;
+
+
+if(!f.type.startsWith("image/")){
+
+alert("Select an image.");
+
+return;
+
+}
+
+
+const reader=
+new FileReader();
+
+
+reader.onload=function(e){
+
+refineImageData=e.target.result;
+
+refineMime=f.type;
+
+
+document.getElementById(
+"refPreview"
+).src=refineImageData;
+
+
+document.getElementById(
+"refPreview"
+).style.display="block";
+
+
+document.getElementById(
+"refUploadText"
+).style.display="none";
+
+
+document.getElementById(
+"refStatus"
+).textContent=
+"✅ Image selected.";
+
+};
+
+
+reader.readAsDataURL(f);
+
+});
+
+
+/* =====================================================
+   REFINE URL
+===================================================== */
+
+document
+.getElementById("refUrl")
+.addEventListener(
+"change",
+function(){
+
+const url=this.value.trim();
+
+if(!url)return;
+
+
+const img=
+document.getElementById("refPreview");
+
+
+img.src=url;
+
+img.onload=function(){
+
+img.style.display="block";
+
+document.getElementById(
+"refUploadText"
+).style.display="none";
+
+};
+
+});
+
+
+/* =====================================================
+   REFINE EDIT
+===================================================== */
+
+async function refineImage(){
+
+const url=
+document.getElementById("refUrl")
+.value.trim();
+
+
+let prompt=
+document.getElementById("refPrompt")
+.value.trim();
+
+
+const status=
+document.getElementById("refStatus");
+
+
+const btn=
+document.getElementById("refBtn");
+
+
+if(!url&&!refineImageData){
+
+alert(
+"Upload an image or paste a public image URL."
+);
+
+return;
+
+}
+
+
+if(!prompt){
+
+prompt="Improve this image";
+
+}
+
+
+btn.disabled=true;
+
+status.textContent=
+"⏳ Editing image...";
+
+
+document.getElementById(
+"result"
+).style.display="none";
+
+
+try{
+
+let response;
+
+
+/*
+PUBLIC URL
+*/
+
+if(url){
+
+const requestURL=
+REFINE_API+
+"?prompt="+
+encodeURIComponent(prompt)+
+"&url="+
+encodeURIComponent(url);
+
+
+response=
+await fetch(requestURL);
+
+}
+
+
+/*
+LOCAL IMAGE
+*/
+
+else{
+
+response=
+await fetch(
+REFINE_API,
+{
+method:"POST",
+headers:{
+"Content-Type":
+"application/json"
+},
+body:JSON.stringify({
+
+prompt:prompt,
+
+image:refineImageData,
+
+mimeType:refineMime
+
+})
+}
+);
+
+}
+
+
+if(!response.ok){
+
+throw new Error(
+"HTTP "+response.status
+);
+
+}
+
+
+const type=
+response.headers.get(
+"content-type"
+)||"";
+
+
+/*
+DIRECT IMAGE
+*/
+
+if(type.startsWith("image/")){
+
+const blob=
+await response.blob();
+
+finalRefinedImage=
+URL.createObjectURL(blob);
+
+showResult(finalRefinedImage);
+
+status.textContent=
+"✅ Image edited successfully!";
+
+return;
+
+}
+
+
+/*
+JSON
+*/
+
+const data=
+await response.json();
+
+
+let output=
+data.response||
+data.image||
+data.url||
+data.result||
+data.output||
+data.imageUrl||
+data.image_url;
+
+
+if(
+typeof output==="object" &&
+output!==null
+){
+
+output=
+output.url||
+output.image||
+output.result||
+output.output;
+
+}
+
+
+if(!output){
+
+throw new Error(
+"No image returned."
+);
+
+}
+
+
+finalRefinedImage=output;
+
+showResult(output);
+
+status.textContent=
+"✅ Image edited successfully!";
+
+
+}catch(e){
+
+console.error(e);
+
+if(!url){
+
+status.textContent=
+"❌ Local upload may not be supported by this API. Try a public image URL.";
+
+}else{
+
+status.textContent=
+"❌ Editing failed. Check API/CORS.";
+
+}
+
+}finally{
+
+btn.disabled=false;
+
+}
+
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(src){
+
+document.getElementById(
+"resultImg"
+).src=src;
+
+
+document.getElementById(
+"download"
+).href=src;
+
+
+document.getElementById(
+"result"
+).style.display="block";
+
+
+document.getElementById(
+"result"
+).scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* =====================================================
+   SEND RESULT TO CHAT
+===================================================== */
+
+function sendResultToChat(){
+
+if(!finalRefinedImage)return;
+
+
+chatImage=
+finalRefinedImage;
+
+
+chatMime="image/png";
+
+
+document.getElementById(
+"chatPhotoImg"
+).src=
+finalRefinedImage;
+
+
+document.getElementById(
+"chatPhoto"
+).style.display="block";
+
+
+backChat();
+
+
+document.getElementById(
+"message"
+).value=
+"Please check this edited image.";
+
+
+setTimeout(
+function(){
+sendMessage();
+},
+300
+);
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function openProfile(){
+
+document.getElementById("menu").style.display="none";
+
+document.getElementById("chat").style.display="none";
+
+document.getElementById("refine").style.display="none";
+
+document.getElementById("profile").style.display="block";
+
+updateProfile();
+
+}
+
+
+function updateProfile(){
+
+if(!currentUser)return;
+
+
+document.getElementById("avatar").src=
+currentUser.photo||DEFAULT_AVATAR;
+
+
+document.getElementById("profilePic").src=
+currentUser.photo||DEFAULT_AVATAR;
+
+
+document.getElementById("pName").value=
+currentUser.username||"";
+
+
+document.getElementById("pEmail").value=
+currentUser.email||"";
+
+}
+
+
+/* =====================================================
+   PROFILE PHOTO
+===================================================== */
+
+document
+.getElementById("profilePhoto")
+.addEventListener(
+"change",
+function(){
+
+const f=this.files[0];
+
+if(!f)return;
+
+
+const reader=
+new FileReader();
+
+
+reader.onload=function(e){
+
+document.getElementById(
+"profilePic"
+).src=e.target.result;
+
+};
+
+
+reader.readAsDataURL(f);
+
+});
+
+
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
+
+function saveProfile(){
+
+const name=
+document.getElementById(
+"pName"
+).value.trim();
+
+
+const email=
+document.getElementById(
+"pEmail"
+).value.trim();
+
+
+const pass=
+document.getElementById(
+"pPassword"
+).value;
+
+
+if(!name){
+
+alert("Username cannot be empty.");
+
+return;
+
+}
+
+
+let users=
+JSON.parse(
+localStorage.getItem("ohid_users")||"{}"
+);
+
+
+const oldKey=
+currentUser.username.toLowerCase();
+
+const newKey=
+name.toLowerCase();
+
+
+if(
+newKey!==oldKey &&
+users[newKey]
+){
+
+alert("Username already exists.");
+
+return;
+
+}
+
+
+const updated={
+
+username:name,
+
+email:email,
+
+password:
+pass||currentUser.password,
+
+photo:
+document.getElementById(
+"profilePic"
+).src
+
+};
+
+
+delete users[oldKey];
+
+users[newKey]=updated;
+
+
+localStorage.setItem(
+"ohid_users",
+JSON.stringify(users)
+);
+
+
+currentUser=updated;
+
+
+localStorage.setItem(
+"ohid_current_user",
+name
+);
+
+
+updateProfile();
+
+alert(
+"Profile updated successfully!"
+);
+
+
+backChat();
+
+}
+
+
+/* =====================================================
+   ENTER TO SEND
+===================================================== */
+
+document
+.getElementById("message")
+.addEventListener(
+"keydown",
+function(e){
+
+if(
+e.key==="Enter" &&
+!e.shiftKey
+){
+
+e.preventDefault();
+
+sendMessage();
+
+}
+
+});
+
+</script>
+
+</body>
 </html>
