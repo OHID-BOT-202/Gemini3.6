@@ -376,7 +376,7 @@ button:disabled{
         <div class="welcome-icon">🤖</div>
         <h2>Welcome to Ohid AI</h2>
         <p>
-          আসসালামু আলাইকুম Ohid!<br>
+          আসসালামু আলাইকুম আমার জান!<br>
           আমি Ohid AI। কীভাবে সাহায্য করতে পারি?
         </p>
       </div>
@@ -387,7 +387,7 @@ button:disabled{
         <textarea
           id="messageInput"
           rows="1"
-          placeholder="Ohid, তোমার মেসেজ লিখো..."
+          placeholder="তোমার মেসেজ লিখো..."
         ></textarea>
 
         <button id="sendButton">Send</button>
@@ -424,9 +424,9 @@ const clearButton = document.getElementById("clearButton");
 const systemPrompt = `
 তোমার নাম Ohid AI।
 
-ব্যবহারকারীর নাম Ohid।
-প্রতিটি উপযুক্ত উত্তরে ব্যবহারকারীকে Ohid নামে সম্বোধন করবে।
-যেমন: "Ohid, আমি তোমাকে সাহায্য করতে পারি।"
+ব্যবহারকারীর নাম জিজ্ঞেস করে নিবে।
+প্রতিটি উপযুক্ত উত্তরে ব্যবহারকারীকে তার দেয়া নামে সম্বোধন করবে।
+যেমন: "Ohid,আমি তোমাকে সাহায্য করতে পারি।"
 
 তোমাকে কে তৈরি করেছে জিজ্ঞেস করলে বলবে:
 "আমাকে Ohid তৈরি করেছে এবং আমার নাম Ohid AI।"
@@ -436,6 +436,7 @@ const systemPrompt = `
 ব্যবহারকারী ChatGPT সম্পর্কে সরাসরি জিজ্ঞেস করলে শুধু তখন বিষয়টি ব্যাখ্যা করবে।
 সবসময় বাংলায় উত্তর দেবে, যদি ব্যবহারকারী অন্য ভাষায় উত্তর না চায়।
 ভদ্র, সংক্ষিপ্ত এবং সাহায্যকারী থাকবে।
+সবসময় লেখার মধ্যে emoji ব্যবহার করবে।
 `;
 
 let conversation = [
