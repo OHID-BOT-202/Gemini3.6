@@ -1,356 +1,345 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ohid AI</title>
+<title>Ohid bby Ai</title>
 
 <style>
-*{box-sizing:border-box}
+@font-face{
+    font-family:"Kalpana";
+    src:url("Kalpana UNICODE.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal;
+    font-display:swap;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+}
 
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:10px;
-  font-family:Arial,sans-serif;
-  color:white;
-  background:#050509;
-  overflow:hidden;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:-50%;
-  z-index:-2;
-  background:
-    radial-gradient(circle at 20% 20%,#ff00cc55,transparent 30%),
-    radial-gradient(circle at 80% 30%,#00ffff55,transparent 30%),
-    radial-gradient(circle at 50% 90%,#8b00ff55,transparent 30%);
-  animation:bgMove 12s ease-in-out infinite alternate;
-}
-
-@keyframes bgMove{
-  from{transform:translate(-5%,-5%) rotate(0deg) scale(1)}
-  to{transform:translate(5%,5%) rotate(12deg) scale(1.2)}
+    min-height:100vh;
+    font-family:"Kalpana", Arial, sans-serif;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.12),
+            rgba(0,0,0,.12)
+        ),
+        url("https://i.ibb.co.com/F4nJPjzb/file-000000008e7482118c92ba40bfa3d1fd.png")
+        center/cover fixed no-repeat;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
 }
 
 .app{
-  width:100%;
-  max-width:900px;
-  padding:2px;
-  border-radius:25px;
-  background:linear-gradient(
-    90deg,#00ffff,#ff00cc,#8b00ff,#0066ff,#00ffff
-  );
-  background-size:400% 400%;
-  animation:rgbBorder 8s linear infinite;
-  box-shadow:0 0 25px #00ffff55;
+    width:100%;
+    max-width:500px;
+    height:100vh;
+    min-height:550px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+    background:rgba(0,0,0,.18);
+    backdrop-filter:blur(3px);
+    border-left:1px solid rgba(255,255,255,.15);
+    border-right:1px solid rgba(255,255,255,.15);
 }
 
-@keyframes rgbBorder{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+.app::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    border:2px solid;
+    border-image:linear-gradient(
+        90deg,
+        red,
+        orange,
+        yellow,
+        lime,
+        cyan,
+        blue,
+        violet,
+        red
+    ) 1;
+    animation:borderRGB 2.5s linear infinite;
+    z-index:10;
 }
 
-.inner{
-  min-height:650px;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  border-radius:23px;
-  background:rgba(7,7,18,.94);
-  backdrop-filter:blur(15px);
+@keyframes borderRGB{
+    0%{filter:hue-rotate(0deg);}
+    100%{filter:hue-rotate(360deg);}
+}
+
+@keyframes textRGB{
+    0%{color:red;}
+    16%{color:orange;}
+    33%{color:yellow;}
+    50%{color:lime;}
+    66%{color:cyan;}
+    83%{color:#8b5cf6;}
+    100%{color:red;}
 }
 
 .header{
-  text-align:center;
-  padding:25px 15px;
-  border-bottom:1px solid #ffffff18;
+    height:75px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 15px;
+    background:rgba(0,0,0,.42);
+    border-bottom:1px solid rgba(255,255,255,.2);
+    z-index:2;
 }
 
-.logo{
-  width:75px;
-  height:75px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:2px solid #00ffff;
-  border-radius:50%;
-  color:#00ffff;
-  font-size:32px;
-  font-weight:bold;
-  text-shadow:0 0 15px #00ffff;
-  box-shadow:0 0 20px #00ffff;
-  animation:pulse 2.5s infinite;
+.profile{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid;
+    border-color:#00ffff;
+    box-shadow:
+        0 0 8px #00ffff,
+        0 0 18px #ff00ff;
+    animation:borderRGB 2.5s linear infinite;
 }
 
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.08);box-shadow:0 0 40px #00ffff}
+.header-info{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
 }
 
 .title{
-  margin:15px 0 8px;
-  font-size:clamp(28px,7vw,45px);
-  letter-spacing:3px;
-  background:linear-gradient(
-    90deg,#00ffff,#ff00cc,#8b00ff,#00ffff
-  );
-  background-size:300%;
-  color:transparent;
-  -webkit-background-clip:text;
-  background-clip:text;
-  animation:titleMove 5s linear infinite;
-}
-
-@keyframes titleMove{
-  to{background-position:300% center}
-}
-
-.subtitle{
-  color:#aaaabd;
-  font-size:13px;
-  margin:0 0 12px;
+    font-size:23px;
+    font-weight:bold;
+    white-space:nowrap;
+    animation:textRGB 2.5s linear infinite;
 }
 
 .status{
-  display:inline-flex;
-  gap:7px;
-  align-items:center;
-  padding:7px 13px;
-  border:1px solid #00ffcc66;
-  border-radius:30px;
-  color:#00ffcc;
-  font-size:12px;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#00ffcc;
-  box-shadow:0 0 10px #00ffcc;
-  animation:blink 1.2s infinite;
-}
-
-@keyframes blink{
-  0%,100%{opacity:1}
-  50%{opacity:.3}
+    color:#9effc7;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    margin-top:2px;
 }
 
 .chat{
-  flex:1;
-  min-height:350px;
-  max-height:470px;
-  overflow-y:auto;
-  padding:20px;
+    flex:1;
+    overflow-y:auto;
+    padding:18px 13px 95px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    scroll-behavior:smooth;
 }
 
-.chat::-webkit-scrollbar{width:6px}
+.chat::-webkit-scrollbar{
+    width:5px;
+}
+
 .chat::-webkit-scrollbar-thumb{
-  background:linear-gradient(#00ffff,#ff00cc);
-  border-radius:20px;
+    background:linear-gradient(red,blue);
+    border-radius:10px;
 }
 
 .welcome{
-  text-align:center;
-  padding:35px 15px;
-  color:#bbb;
-}
-
-.welcome-icon{
-  font-size:45px;
-  animation:float 3s infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-
-.welcome h2{
-  color:white;
-  font-size:22px;
-}
-
-.welcome p{
-  font-size:13px;
-  line-height:1.7;
+    align-self:center;
+    text-align:center;
+    max-width:90%;
+    padding:12px 15px;
+    font-size:16px;
+    line-height:1.5;
+    border:1px solid #00ffff;
+    border-radius:16px;
+    background:rgba(0,0,0,.28);
+    box-shadow:0 0 12px rgba(0,255,255,.4);
+    animation:borderRGB 2.5s linear infinite;
 }
 
 .message{
-  display:flex;
-  margin:15px 0;
-  animation:showMessage .35s ease;
+    max-width:86%;
+    padding:11px 14px;
+    font-size:17px;
+    line-height:1.55;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    border:1px solid;
+    border-radius:17px;
+    background:rgba(0,0,0,.25);
+    box-shadow:0 0 10px rgba(0,255,255,.18);
+    animation:borderRGB 2.5s linear infinite;
 }
 
-.user{justify-content:flex-end}
-.ai{justify-content:flex-start}
-
-@keyframes showMessage{
-  from{
-    opacity:0;
-    transform:translateY(15px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+.user{
+    align-self:flex-end;
+    border-color:#00ff88;
+    border-bottom-right-radius:4px;
 }
 
-.bubble{
-  max-width:85%;
-  padding:13px 16px;
-  border-radius:17px;
-  font-size:14px;
-  line-height:1.65;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
+.bot{
+    align-self:flex-start;
+    border-color:#ff00ff;
+    border-bottom-left-radius:4px;
 }
 
-.user .bubble{
-  border:1px solid #00ffff99;
-  border-bottom-right-radius:4px;
-  background:linear-gradient(135deg,#0066ff55,#00ffff22);
+.message-name{
+    display:block;
+    font-family:Arial,sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:4px;
+    opacity:.8;
 }
 
-.ai .bubble{
-  border:1px solid #ff00cc88;
-  border-bottom-left-radius:4px;
-  background:linear-gradient(135deg,#ff00cc22,#8b00ff22);
+.user .message-name{
+    color:#00ff88;
 }
 
-.typing{
-  display:flex;
-  gap:5px;
-  padding:14px 17px;
-  border:1px solid #ff00cc88;
-  border-radius:17px;
-  background:#ff00cc18;
-}
-
-.typing span{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#ff00cc;
-  animation:typing 1s infinite;
-}
-
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
-
-@keyframes typing{
-  0%,60%,100%{transform:translateY(0);opacity:.4}
-  30%{transform:translateY(-7px);opacity:1}
-}
-
-.bottom{
-  padding:15px 18px 10px;
-  border-top:1px solid #ffffff18;
+.bot .message-name{
+    color:#ff55ff;
 }
 
 .input-area{
-  display:flex;
-  align-items:flex-end;
-  gap:10px;
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    display:flex;
+    gap:8px;
+    padding:12px;
+    background:rgba(0,0,0,.55);
+    border-top:1px solid rgba(255,255,255,.2);
+    z-index:3;
 }
 
-textarea{
-  flex:1;
-  min-height:48px;
-  max-height:130px;
-  resize:none;
-  outline:none;
-  padding:14px 16px;
-  border:1px solid #ffffff25;
-  border-radius:15px;
-  color:white;
-  background:#ffffff08;
-  font-family:Arial,sans-serif;
-  font-size:14px;
+#messageInput{
+    flex:1;
+    min-width:0;
+    height:48px;
+    padding:0 15px;
+    color:white;
+    font-family:"Kalpana", Arial, sans-serif;
+    font-size:17px;
+    outline:none;
+    border:2px solid;
+    border-radius:25px;
+    background:rgba(0,0,0,.28);
+    border-color:#00ffff;
+    animation:borderRGB 2.5s linear infinite;
 }
 
-textarea:focus{
-  border-color:#00ffff;
-  box-shadow:0 0 15px #00ffff33;
+#messageInput::placeholder{
+    color:rgba(255,255,255,.65);
 }
 
-button{
-  min-width:90px;
-  height:48px;
-  border:0;
-  border-radius:15px;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  background:linear-gradient(
-    135deg,#0066ff,#8b00ff,#ff00cc,#00ffff
-  );
-  background-size:300%;
-  animation:buttonRGB 5s linear infinite;
-  transition:.25s;
+#sendBtn{
+    width:48px;
+    height:48px;
+    flex-shrink:0;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    color:white;
+    font-size:21px;
+    background:linear-gradient(
+        135deg,
+        #ff0055,
+        #7c00ff,
+        #00c8ff
+    );
+    box-shadow:0 0 12px rgba(0,255,255,.5);
+    transition:.2s;
 }
 
-button:hover{
-  transform:translateY(-3px);
-  box-shadow:0 0 20px #00ffff77;
+#sendBtn:hover{
+    transform:scale(1.08);
 }
 
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
+#sendBtn:active{
+    transform:scale(.95);
 }
 
-@keyframes buttonRGB{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+#sendBtn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
-.clear-row{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:10px;
+.typing{
+    align-self:flex-start;
+    display:none;
+    gap:5px;
+    padding:12px 15px;
+    border:1px solid #00ffff;
+    border-radius:17px;
+    background:rgba(0,0,0,.3);
 }
 
-.clear-btn{
-  min-width:auto;
-  height:auto;
-  padding:7px 12px;
-  font-size:11px;
-  color:#ff7799;
-  background:#ff005511;
-  border:1px solid #ff005566;
-  animation:none;
+.typing span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#00ffff;
+    animation:typing 1s infinite;
 }
 
-.powered{
-  text-align:center;
-  margin-top:12px;
-  color:#888899;
-  font-size:12px;
-  letter-spacing:1px;
+.typing span:nth-child(2){
+    animation-delay:.15s;
 }
 
-.powered span{
-  color:#00ffff;
-  font-weight:bold;
-  text-shadow:0 0 10px #00ffff;
+.typing span:nth-child(3){
+    animation-delay:.3s;
 }
 
-@media(max-width:600px){
-  .inner{min-height:680px}
-  .chat{padding:14px}
-  .bubble{max-width:90%;font-size:13px}
-  .bottom{padding:12px}
-  button{min-width:75px}
+@keyframes typing{
+    0%,100%{
+        opacity:.25;
+        transform:translateY(0);
+    }
+    50%{
+        opacity:1;
+        transform:translateY(-4px);
+    }
+}
+
+.error{
+    color:#ff8f8f;
+    border-color:#ff3333;
+}
+
+@media(max-width:520px){
+    body{
+        align-items:stretch;
+    }
+
+    .app{
+        max-width:none;
+        border:none;
+    }
+
+    .title{
+        font-size:21px;
+    }
+
+    .message{
+        max-width:90%;
+        font-size:16px;
+    }
 }
 </style>
 </head>
@@ -358,261 +347,179 @@ button:disabled{
 <body>
 
 <div class="app">
-  <div class="inner">
 
-    <header class="header">
-      <div class="logo">O</div>
-      <h1 class="title">OHID AI</h1>
-      <p class="subtitle">Your intelligent AI companion</p>
+    <div class="header">
+        <img
+            class="profile"
+            src="https://i.ibb.co/G4sHV2cW/20260822-000544.jpg"
+            alt="Ohid bby Ai"
+        >
 
-      <div class="status">
-        <span class="status-dot"></span>
-        Online and ready
-      </div>
-    </header>
-
-    <main id="chat" class="chat">
-      <div id="welcome" class="welcome">
-        <div class="welcome-icon">🤖</div>
-        <h2>Welcome to Ohid AI</h2>
-        <p>
-          আসসালামু আলাইকুম আমার জান!<br>
-          আমি Ohid AI। কীভাবে সাহায্য করতে পারি?
-        </p>
-      </div>
-    </main>
-
-    <div class="bottom">
-      <div class="input-area">
-        <textarea
-          id="messageInput"
-          rows="1"
-          placeholder="তোমার মেসেজ লিখো..."
-        ></textarea>
-
-        <button id="sendButton">Send</button>
-      </div>
-
-      <div class="clear-row">
-        <button id="clearButton" class="clear-btn">
-          Clear Chat
-        </button>
-      </div>
-
-      <div class="powered">
-        Powered by <span>Ohid</span>
-      </div>
+        <div class="header-info">
+            <div class="title">Ohid bby Ai</div>
+            <div class="status">● Online • Powered by Ohid</div>
+        </div>
     </div>
 
-  </div>
+    <div class="chat" id="chat">
+
+        <div class="welcome">
+            আসসালামু আলাইকুম! আমি <b>Ohid bby Ai</b>।<br>
+            আমাকে যেকোনো প্রশ্ন করতে পারো।
+        </div>
+
+        <div class="typing" id="typing">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+    <div class="input-area">
+        <input
+            id="messageInput"
+            type="text"
+            placeholder="মেসেজ লিখুন..."
+            autocomplete="off"
+        >
+
+        <button id="sendBtn" title="Send">➤</button>
+    </div>
+
 </div>
 
 <script>
-/* শুধু এখানে নিজের Groq API key বসাও */
 const GROQ_API_KEY = "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";
 
-const GROQ_API_URL =
-  "https://api.groq.com/openai/v1/chat/completions";
+const API_URL =
+    "https://api.groq.com/openai/v1/chat/completions";
 
-const GROQ_MODEL = "openai/gpt-oss-20b";
+const MODEL =
+    "lopenai/gpt-oss-20b";
 
 const chat = document.getElementById("chat");
-const messageInput = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
-const clearButton = document.getElementById("clearButton");
-
-const systemPrompt = `
-তোমার নাম Ohid AI।
-
-ব্যবহারকারীর নাম যদি বলে তাহলেতার নাম ধরে ডাকবে ।
-প্রতিটি উপযুক্ত উত্তরে ব্যবহারকারীকে জান  নামে সম্বোধন করবে।
-যেমন: "jan ,আমি তোমাকে সাহায্য করতে পারি।"
-
-তোমাকে কে তৈরি করেছে জিজ্ঞেস করলে বলবে:
-"আমাকে Ohid তৈরি করেছে এবং আমার নাম Ohid AI।"
-
-নিজেকে কখনো ChatGPT, GPT, OpenAI বা অন্য কোনো নামে পরিচয় দেবে না।
-তুমি Ohid এর তৈরি করা Ohid AI assistant।
-ব্যবহারকারী ChatGPT সম্পর্কে সরাসরি জিজ্ঞেস করলে শুধু তখন বিষয়টি ব্যাখ্যা করবে।
-সবসময় বাংলায় উত্তর দেবে, যদি ব্যবহারকারী অন্য ভাষায় উত্তর না চায়।
-ভদ্র, সংক্ষিপ্ত এবং সাহায্যকারী থাকবে।
-সবসময় লেখার মধ্যে emoji ব্যবহার করবে।
-যে লেখার কোনো উত্তর থাকবে না,  তুমি ওই লেখার মজার একটা রিপ্লাই দিবে।
-বেশিরভাগ সময়ে funny mood এ থাকবে।
-
-
-`;
+const input = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const typing = document.getElementById("typing");
 
 let conversation = [
-  {
-    role:"system",
-    content:systemPrompt
-  }
+    {
+        role:"system",
+        content:
+        "তোমার নাম Ohid bby Ai। " +
+        "ব্যবহারকারী তোমাকে কী তৈরি করেছে জিজ্ঞেস করলে বলবে, " +
+        "তোমাকে Ohid তৈরি করেছে। " +
+        "নিজেকে ChatGPT বলবে না। " +
+        "সবসময় সুন্দর ও সহজ বাংলায় উত্তর দেবে।"
+    }
 ];
 
-function addMessage(text, sender){
-  const oldWelcome = document.getElementById("welcome");
+function addMessage(text, type){
+    const message = document.createElement("div");
+    message.className = "message " + type;
 
-  if(oldWelcome){
-    oldWelcome.remove();
-  }
+    const name = document.createElement("span");
+    name.className = "message-name";
+    name.textContent = type === "user" ? "You" : "Ohid bby Ai";
 
-  const message = document.createElement("div");
-  message.className = "message " + sender;
+    const content = document.createElement("span");
+    content.textContent = text;
 
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-  bubble.textContent = text;
+    message.appendChild(name);
+    message.appendChild(content);
 
-  message.appendChild(bubble);
-  chat.appendChild(message);
-  chat.scrollTop = chat.scrollHeight;
+    chat.insertBefore(message, typing);
+    chat.scrollTop = chat.scrollHeight;
 }
 
-function addTyping(){
-  const message = document.createElement("div");
-  message.id = "typingMessage";
-  message.className = "message ai";
-
-  message.innerHTML = `
-    <div class="typing">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  `;
-
-  chat.appendChild(message);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function removeTyping(){
-  const typing = document.getElementById("typingMessage");
-
-  if(typing){
-    typing.remove();
-  }
+function showTyping(show){
+    typing.style.display = show ? "flex" : "none";
+    chat.scrollTop = chat.scrollHeight;
 }
 
 async function sendMessage(){
-  const text = messageInput.value.trim();
+    const text = input.value.trim();
 
-  if(!text || sendButton.disabled){
-    return;
-  }
-
-  if(
-    !GROQ_API_KEY ||
-    GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE"
-  ){
-    addMessage(
-      "Ohid, আগে GROQ_API_KEY অংশে তোমার API key বসাও।",
-      "ai"
-    );
-    return;
-  }
-
-  addMessage(text,"user");
-
-  conversation.push({
-    role:"user",
-    content:text
-  });
-
-  messageInput.value = "";
-  messageInput.style.height = "48px";
-
-  sendButton.disabled = true;
-  sendButton.textContent = "Wait...";
-
-  addTyping();
-
-  try{
-    const response = await fetch(GROQ_API_URL,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + GROQ_API_KEY
-      },
-      body:JSON.stringify({
-        model:GROQ_MODEL,
-        messages:conversation,
-        temperature:.7,
-        max_tokens:1024
-      })
-    });
-
-    const data = await response.json();
-
-    removeTyping();
-
-    if(!response.ok){
-      throw new Error(
-        data.error?.message || "API request failed"
-      );
+    if(!text || sendBtn.disabled){
+        return;
     }
 
-    const reply =
-      data.choices?.[0]?.message?.content ||
-      "দুঃখিত Baby, কোনো উত্তর পাওয়া যায়নি।";
+    if(
+        GROQ_API_KEY === "YOUR_GROQ_API_KEY" ||
+        GROQ_API_KEY.length < 10
+    ){
+        addMessage(
+            "প্রথমে কোডের মধ্যে YOUR_GROQ_API_KEY-এর জায়গায় তোমার Groq API key বসাও।",
+            "bot"
+        );
+        return;
+    }
+
+    addMessage(text, "user");
+    input.value = "";
+    sendBtn.disabled = true;
+    showTyping(true);
 
     conversation.push({
-      role:"assistant",
-      content:reply
+        role:"user",
+        content:text
     });
 
-    addMessage(reply,"ai");
+    try{
+        const response = await fetch(API_URL, {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + GROQ_API_KEY
+            },
+            body:JSON.stringify({
+                model:MODEL,
+                messages:conversation,
+                temperature:0.8,
+                max_tokens:700
+            })
+        });
 
-  }catch(error){
-    removeTyping();
+        const data = await response.json();
 
-    addMessage(
-      "Ohid, API Error: " + error.message,
-      "ai"
-    );
+        if(!response.ok){
+            throw new Error(
+                data.error?.message || "API request failed"
+            );
+        }
 
-  }finally{
-    sendButton.disabled = false;
-    sendButton.textContent = "Send";
-    messageInput.focus();
-  }
-}
+        const reply =
+            data.choices?.[0]?.message?.content ||
+            "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
 
-function clearChat(){
-  conversation = [
-    {
-      role:"system",
-      content:systemPrompt
+        conversation.push({
+            role:"assistant",
+            content:reply
+        });
+
+        addMessage(reply, "bot");
+
+    }catch(error){
+        addMessage(
+            "দুঃখিত, সমস্যা হয়েছে:\n" + error.message,
+            "bot error"
+        );
+    }finally{
+        showTyping(false);
+        sendBtn.disabled = false;
+        input.focus();
     }
-  ];
-
-  chat.innerHTML = `
-    <div id="welcome" class="welcome">
-      <div class="welcome-icon">🤖</div>
-      <h2>Welcome to Ohid AI</h2>
-      <p>
-        আসসালামু আলাইকুম Ohid!<br>
-        আমি Ohid AI। কীভাবে সাহায্য করতে পারি?
-      </p>
-    </div>
-  `;
 }
 
-messageInput.addEventListener("input",function(){
-  this.style.height = "48px";
-  this.style.height =
-    Math.min(this.scrollHeight,130) + "px";
-});
+sendBtn.addEventListener("click", sendMessage);
 
-messageInput.addEventListener("keydown",function(event){
-  if(event.key === "Enter" && !event.shiftKey){
-    event.preventDefault();
-    sendMessage();
-  }
+input.addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        event.preventDefault();
+        sendMessage();
+    }
 });
-
-sendButton.addEventListener("click",sendMessage);
-clearButton.addEventListener("click",clearChat);
 </script>
 
 </body>
