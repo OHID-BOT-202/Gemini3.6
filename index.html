@@ -1,667 +1,984 @@
-
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ohid AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ohid AI</title>
 
-<style>
-*{box-sizing:border-box}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#05070d;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    :root {
+      --cyan: #00ffff;
+      --pink: #ff00cc;
+      --purple: #8b00ff;
+      --blue: #0066ff;
+      --bg: #050509;
+      --panel: rgba(10, 10, 20, 0.86);
+      --text: #ffffff;
+      --muted: #a7a7b5;
+    }
 
-.app{
-  width:100%;
-  max-width:500px;
-  min-height:100vh;
-  background:#0d121c;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  overflow:hidden;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: #050509;
+      overflow-x: hidden;
+    }
 
-/* RGB background glow */
-.app::before{
-  content:"";
-  position:absolute;
-  inset:-50%;
-  background:conic-gradient(
-    #ff0000,
-    #ff7300,
-    #ffee00,
-    #00ff00,
-    #00ffff,
-    #0066ff,
-    #cc00ff,
-    #ff0000
-  );
-  animation:rgbRotate 12s linear infinite;
-  opacity:.12;
-  filter:blur(70px);
-  pointer-events:none;
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -50%;
+      z-index: -3;
+      background:
+        radial-gradient(circle at 20% 20%, #ff00cc44, transparent 30%),
+        radial-gradient(circle at 80% 30%, #00ffff44, transparent 30%),
+        radial-gradient(circle at 50% 90%, #8b00ff44, transparent 30%);
+      animation: backgroundMove 12s ease-in-out infinite alternate;
+    }
 
-.app>*{
-  position:relative;
-  z-index:1;
-}
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, transparent 49%, #ffffff08 50%, transparent 51%),
+        linear-gradient(transparent 49%, #ffffff08 50%, transparent 51%);
+      background-size: 45px 45px;
+      animation: gridMove 8s linear infinite;
+      pointer-events: none;
+    }
 
-@keyframes rgbRotate{
-  to{transform:rotate(360deg)}
-}
+    @keyframes backgroundMove {
+      0% {
+        transform: translate(-5%, -5%) rotate(0deg) scale(1);
+      }
 
-/* RGB border */
-.auth,
-header,
-.composer{
-  position:relative;
-  border:1px solid transparent;
-  background:
-    linear-gradient(#151c29,#151c29) padding-box,
-    linear-gradient(90deg,
-      #ff0000,
-      #ff7300,
-      #ffee00,
-      #00ff00,
-      #00ffff,
-      #0066ff,
-      #cc00ff,
-      #ff0000
-    ) border-box;
-  background-size:100% 100%,400% 100%;
-  animation:rgbBorder 8s linear infinite;
-}
+      100% {
+        transform: translate(5%, 5%) rotate(12deg) scale(1.2);
+      }
+    }
 
-@keyframes rgbBorder{
-  0%{background-position:0 0,0% 50%}
-  50%{background-position:0 0,100% 50%}
-  100%{background-position:0 0,0% 50%}
-}
+    @keyframes gridMove {
+      from {
+        transform: translate(0, 0);
+      }
 
-/* Login / Register */
-.auth{
-  width:90%;
-  max-width:380px;
-  margin:auto;
-  padding:25px;
-  border-radius:18px;
-  box-shadow:0 0 25px #00e5ff15;
-}
+      to {
+        transform: translate(45px, 45px);
+      }
+    }
 
-.auth h1{
-  text-align:center;
-  color:#00e5ff;
-  animation:rgbText 5s linear infinite;
-}
+    .app {
+      width: 100%;
+      max-width: 900px;
+      padding: 2px;
+      border-radius: 25px;
+      background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--pink),
+        var(--purple),
+        var(--blue),
+        var(--cyan)
+      );
+      background-size: 400% 400%;
+      animation: rgbBorder 8s linear infinite;
+      box-shadow:
+        0 0 15px #00ffff55,
+        0 0 35px #ff00cc33,
+        0 0 70px #8b00ff22;
+    }
 
-.auth p{
-  text-align:center;
-  color:#9ba8bd;
-}
+    @keyframes rgbBorder {
+      0% {
+        background-position: 0% 50%;
+      }
 
-@keyframes rgbText{
-  0%{color:#ff0000}
-  16%{color:#ff7300}
-  33%{color:#ffee00}
-  50%{color:#00ff00}
-  66%{color:#00ffff}
-  83%{color:#0066ff}
-  100%{color:#ff0000}
-}
+      50% {
+        background-position: 100% 50%;
+      }
 
-input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #303b52;
-  background:#0c111a;
-  color:#fff;
-  outline:none;
-  margin:7px 0;
-}
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-input:focus{
-  border-color:#00c8ff;
-  box-shadow:0 0 10px #00c8ff30;
-}
+    .inner {
+      min-height: 650px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 23px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+    }
 
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px 16px;
-  background:#00c8ff;
-  color:#001018;
-  font-weight:bold;
-  cursor:pointer;
-}
+    .header {
+      position: relative;
+      padding: 22px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ffffff16;
+      overflow: hidden;
+    }
 
-button:hover{
-  filter:brightness(1.15);
-}
+    .header::after {
+      content: "";
+      position: absolute;
+      left: -100%;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        var(--pink),
+        transparent
+      );
+      animation: headerLine 4s linear infinite;
+    }
 
-.auth button{
-  width:100%;
-  margin-top:10px;
-}
+    @keyframes headerLine {
+      0% {
+        left: -100%;
+      }
 
-.switch{
-  text-align:center;
-  margin-top:15px;
-  color:#9ba8bd;
-  cursor:pointer;
-}
+      100% {
+        left: 100%;
+      }
+    }
 
-.switch span{
-  color:#00e5ff;
-}
+    .logo {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      color: var(--cyan);
+      font-size: 30px;
+      font-weight: bold;
+      text-shadow: 0 0 12px var(--cyan);
+      box-shadow:
+        0 0 12px var(--cyan),
+        inset 0 0 15px #00ffff55;
+      animation: logoPulse 2.5s ease-in-out infinite;
+    }
 
-.error{
-  color:#ff6b6b;
-  text-align:center;
-  min-height:20px;
-  font-size:13px;
-}
+    .logo::before,
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border: 1px solid var(--pink);
+      border-radius: 50%;
+      animation: logoRing 4s linear infinite;
+    }
 
-.hidden{
-  display:none!important;
-}
+    .logo::after {
+      inset: -16px;
+      border-color: var(--purple);
+      animation-direction: reverse;
+      animation-duration: 6s;
+    }
 
-/* Header */
-header{
-  padding:18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
+    @keyframes logoPulse {
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow:
+          0 0 12px var(--cyan),
+          inset 0 0 15px #00ffff55;
+      }
 
-.logo{
-  font-weight:bold;
-  font-size:20px;
-  color:#00e5ff;
-  animation:rgbText 5s linear infinite;
-}
+      50% {
+        transform: scale(1.08);
+        box-shadow:
+          0 0 28px var(--cyan),
+          0 0 50px #ff00cc55,
+          inset 0 0 20px #00ffff99;
+      }
+    }
 
-header small{
-  color:#8d9ab0;
-}
+    @keyframes logoRing {
+      from {
+        transform: rotate(0deg) scale(1);
+      }
 
-/* Chat */
-.chat{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-}
+      to {
+        transform: rotate(360deg) scale(1.08);
+      }
+    }
 
-.info{
-  padding:10px 18px;
-  color:#8290a7;
-  font-size:12px;
-  text-align:center;
-}
+    .title {
+      margin: 0;
+      font-size: clamp(27px, 6vw, 42px);
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--pink),
+        var(--purple),
+        var(--cyan)
+      );
+      background-size: 300% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: titleRGB 5s linear infinite;
+    }
 
-.messages{
-  flex:1;
-  overflow-y:auto;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
+    @keyframes titleRGB {
+      to {
+        background-position: 300% center;
+      }
+    }
 
-.msg{
-  max-width:85%;
-  padding:12px 14px;
-  border-radius:14px;
-  line-height:1.5;
-  white-space:pre-wrap;
-  word-wrap:break-word;
-}
+    .subtitle {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
 
-.user{
-  align-self:flex-end;
-  background:#006d8c;
-  border:1px solid #00e5ff;
-}
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 13px;
+      padding: 7px 13px;
+      border: 1px solid #00ffcc55;
+      border-radius: 30px;
+      color: #00ffcc;
+      background: #00ffcc0d;
+      font-size: 12px;
+      animation: statusGlow 2s ease-in-out infinite alternate;
+    }
 
-.bot{
-  align-self:flex-start;
-  background:#202b3d;
-  border:1px solid #303b52;
-}
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc;
+      animation: dotBlink 1.3s infinite;
+    }
 
-.typing{
-  color:#9ba8bd;
-  font-size:13px;
-}
+    @keyframes statusGlow {
+      from {
+        box-shadow: 0 0 0 #00ffcc00;
+      }
 
-/* Composer */
-.composer{
-  padding:12px;
-  display:flex;
-  gap:8px;
-}
+      to {
+        box-shadow: 0 0 15px #00ffcc33;
+      }
+    }
 
-.composer input{
-  margin:0;
-  flex:1;
-}
+    @keyframes dotBlink {
+      0%,
+      100% {
+        opacity: 1;
+      }
 
-.composer button{
-  padding:12px 15px;
-  background:linear-gradient(90deg,
-    #ff0000,
-    #ff7300,
-    #ffee00,
-    #00ff00,
-    #00ffff,
-    #0066ff,
-    #cc00ff,
-    #ff0000
-  );
-  background-size:400% 100%;
-  animation:rgbButton 8s linear infinite;
-  color:#fff;
-}
+      50% {
+        opacity: 0.35;
+      }
+    }
 
-@keyframes rgbButton{
-  0%{background-position:0% 50%}
-  100%{background-position:400% 50%}
-}
+    .chat {
+      flex: 1;
+      min-height: 350px;
+      max-height: 470px;
+      overflow-y: auto;
+      padding: 22px;
+      scroll-behavior: smooth;
+    }
 
-.clear{
-  background:transparent;
-  color:#9ba8bd;
-  border:1px solid #303b52;
-  padding:8px 12px;
-  font-size:12px;
-}
+    .chat::-webkit-scrollbar {
+      width: 6px;
+    }
 
-.logout{
-  background:#263044;
-  color:#fff;
-  padding:8px 12px;
-  font-size:12px;
-}
+    .chat::-webkit-scrollbar-thumb {
+      border-radius: 20px;
+      background: linear-gradient(var(--cyan), var(--pink));
+    }
 
-/* Mobile */
-@media(max-width:400px){
-  header{
-    padding:14px;
-  }
+    .welcome {
+      padding: 30px 15px;
+      text-align: center;
+      color: #bdbdcc;
+      animation: welcomeShow 1s ease both;
+    }
 
-  header h2{
-    font-size:16px;
-  }
+    .welcome-icon {
+      margin-bottom: 15px;
+      font-size: 45px;
+      animation: welcomeFloat 3s ease-in-out infinite;
+    }
 
-  .logo{
-    font-size:17px;
-  }
+    .welcome h2 {
+      margin: 0 0 10px;
+      color: #ffffff;
+      font-size: 22px;
+    }
 
-  .clear,
-  .logout{
-    padding:7px 9px;
-    font-size:11px;
-  }
+    .welcome p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+    }
 
-  .messages{
-    padding:12px;
-  }
+    @keyframes welcomeShow {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
 
-  .auth{
-    padding:20px;
-  }
-}
-</style>
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes welcomeFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-9px);
+      }
+    }
+
+    .message {
+      display: flex;
+      margin: 15px 0;
+      animation: messageShow 0.35s ease both;
+    }
+
+    @keyframes messageShow {
+      from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message.ai {
+      justify-content: flex-start;
+    }
+
+    .bubble {
+      max-width: 82%;
+      padding: 13px 16px;
+      border-radius: 17px;
+      font-size: 14px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .user .bubble {
+      color: #ffffff;
+      border: 1px solid #00ffff88;
+      border-bottom-right-radius: 4px;
+      background: linear-gradient(135deg, #0066ff55, #00ffff22);
+      box-shadow: 0 0 15px #00ffff18;
+    }
+
+    .ai .bubble {
+      color: #eeeeff;
+      border: 1px solid #ff00cc66;
+      border-bottom-left-radius: 4px;
+      background: linear-gradient(135deg, #ff00cc22, #8b00ff22);
+      box-shadow: 0 0 15px #ff00cc15;
+    }
+
+    .typing {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: fit-content;
+      padding: 14px 17px;
+      border: 1px solid #ff00cc66;
+      border-radius: 17px;
+      border-bottom-left-radius: 4px;
+      background: #ff00cc16;
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 8px var(--pink);
+      animation: typingBounce 1s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes typingBounce {
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.45;
+      }
+
+      30% {
+        transform: translateY(-7px);
+        opacity: 1;
+      }
+    }
+
+    .bottom {
+      padding: 15px 18px 10px;
+      border-top: 1px solid #ffffff16;
+      background: #05050955;
+    }
+
+    .input-area {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 48px;
+      max-height: 130px;
+      resize: none;
+      outline: none;
+      padding: 14px 16px;
+      border: 1px solid #ffffff22;
+      border-radius: 15px;
+      color: #ffffff;
+      background: #ffffff08;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.4;
+      transition: 0.3s ease;
+    }
+
+    textarea::placeholder {
+      color: #8f8fa2;
+    }
+
+    textarea:focus {
+      border-color: var(--cyan);
+      background: #00ffff08;
+      box-shadow:
+        0 0 12px #00ffff22,
+        inset 0 0 12px #00ffff0c;
+    }
+
+    button {
+      position: relative;
+      min-width: 90px;
+      height: 48px;
+      border: 0;
+      border-radius: 15px;
+      color: #ffffff;
+      background: linear-gradient(
+        135deg,
+        #0066ff,
+        #8b00ff,
+        #ff00cc,
+        #00ffff
+      );
+      background-size: 300% 300%;
+      font-weight: bold;
+      cursor: pointer;
+      overflow: hidden;
+      transition: 0.25s ease;
+      animation: buttonRGB 5s linear infinite;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        #ffffff77,
+        transparent
+      );
+      transform: skewX(-20deg);
+      animation: buttonShine 3.5s infinite;
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow:
+        0 0 15px #00ffff66,
+        0 0 25px #ff00cc44;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      transform: none;
+    }
+
+    @keyframes buttonRGB {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes buttonShine {
+      0% {
+        left: -100%;
+      }
+
+      45%,
+      100% {
+        left: 150%;
+      }
+    }
+
+    .clear-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .clear-btn {
+      min-width: auto;
+      height: auto;
+      padding: 7px 12px;
+      border: 1px solid #ff005544;
+      border-radius: 10px;
+      color: #ff7799;
+      background: #ff00550d;
+      font-size: 11px;
+      animation: none;
+    }
+
+    .clear-btn:hover {
+      border-color: #ff0055;
+      background: #ff005522;
+      box-shadow: 0 0 12px #ff005533;
+    }
+
+    .powered {
+      margin-top: 12px;
+      text-align: center;
+      color: #888899;
+      font-size: 12px;
+      letter-spacing: 1px;
+      animation: poweredGlow 3s infinite alternate;
+    }
+
+    .powered span {
+      color: var(--cyan);
+      font-weight: bold;
+      text-shadow:
+        0 0 5px var(--cyan),
+        0 0 12px var(--cyan);
+    }
+
+    @keyframes poweredGlow {
+      from {
+        opacity: 0.55;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      animation: particleFloat linear infinite;
+    }
+
+    @keyframes particleFloat {
+      from {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      85% {
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(-15vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+      }
+
+      .inner {
+        min-height: 680px;
+      }
+
+      .header {
+        padding: 20px 12px;
+      }
+
+      .chat {
+        padding: 15px;
+        max-height: 500px;
+      }
+
+      .bubble {
+        max-width: 90%;
+        font-size: 13px;
+      }
+
+      .bottom {
+        padding: 12px;
+      }
+
+      .input-area {
+        gap: 7px;
+      }
+
+      textarea {
+        min-height: 46px;
+        padding: 13px;
+      }
+
+      button {
+        min-width: 75px;
+        height: 46px;
+      }
+
+      .title {
+        letter-spacing: 2px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="app">
+    <div class="inner">
 
-<div class="app">
+      <header class="header">
+        <div class="logo">O</div>
 
-  <!-- LOGIN -->
-  <div id="loginPage" class="auth">
-    <h1>Ohid AI</h1>
-    <p>Login to continue</p>
+        <h1 class="title">OHID AI</h1>
 
-    <input id="loginEmail" type="email" placeholder="Email">
-    <input id="loginPass" type="password" placeholder="Password">
+        <p class="subtitle">
+          Your intelligent AI companion
+        </p>
 
-    <button onclick="login()">Login</button>
-    <div id="loginError" class="error"></div>
+        <div class="status">
+          <span class="status-dot"></span>
+          Online and ready
+        </div>
+      </header>
 
-    <div class="switch" onclick="showRegister()">
-      Account নেই? <span>Register</span>
-    </div>
-  </div>
+      <main id="chat" class="chat">
+        <div id="welcome" class="welcome">
+          <div class="welcome-icon">🤖</div>
+          <h2>Welcome to Ohid AI</h2>
+          <p>
+            Ask me anything and start a smart conversation.
+            <br />
+            I am ready to help you.
+          </p>
+        </div>
+      </main>
 
-  <!-- REGISTER -->
-  <div id="registerPage" class="auth hidden">
-    <h1>Create Account</h1>
-    <p>Register locally</p>
+      <div class="bottom">
+        <div class="input-area">
+          <textarea
+            id="messageInput"
+            placeholder="Write your message..."
+            rows="1"
+          ></textarea>
 
-    <input id="regName" type="text" placeholder="Your name">
-    <input id="regEmail" type="email" placeholder="Email">
-    <input id="regPass" type="password" placeholder="Password">
+          <button id="sendButton">
+            Send
+          </button>
+        </div>
 
-    <button onclick="register()">Register</button>
-    <div id="regError" class="error"></div>
+        <div class="clear-row">
+          <button class="clear-btn" id="clearButton">
+            Clear Chat
+          </button>
+        </div>
 
-    <div class="switch" onclick="showLogin()">
-      Already have account? <span>Login</span>
-    </div>
-  </div>
-
-  <!-- CHAT -->
-  <div id="chatPage" class="chat hidden">
-
-    <header>
-      <div>
-        <div class="logo">⚡ Ohid AI</div>
-        <small id="welcome"></small>
+        <div class="powered">
+          Powered by <span>Ohid</span>
+        </div>
       </div>
 
-      <div>
-        <button class="clear" onclick="clearChat()">Clear</button>
-        <button class="logout" onclick="logout()">Logout</button>
-      </div>
-    </header>
-
-    <div class="info">
-      Welcome to Ohid AI
     </div>
-
-    <div id="messages" class="messages"></div>
-
-    <div class="composer">
-      <input
-        id="prompt"
-        type="text"
-        placeholder="Message Ohid AI..."
-        onkeydown="handleKey(event)"
-      >
-      <button onclick="sendMessage()">Send</button>
-    </div>
-
   </div>
-</div>
 
-<script>
-/* ================================
-   GROQ API CONFIG
-   ================================ */
+  <script>
+    /*
+      IMPORTANT:
+      Replace the text below with your own Groq API key.
+      Never publish your real API key in a public website.
+    */
 
-const GROQ_API_KEY = "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";
+    const GROQ_API_KEY = "এখানে_তোমার_GROQ_API_KEY_বসাও";
 
-const GROQ_URL =
-  "https://api.groq.com/openai/v1/chat/completions";
+    const GROQ_API_URL =
+      "https://api.groq.com/openai/v1/chat/completions";
 
-const MODEL = "llama-3.1-8b-instant";
+    const GROQ_MODEL =
+      "llama-3.1-8b-instant";
 
+    const chat = document.getElementById("chat");
+    const welcome = document.getElementById("welcome");
+    const messageInput = document.getElementById("messageInput");
+    const sendButton = document.getElementById("sendButton");
+    const clearButton = document.getElementById("clearButton");
 
-/* ================================
-   AUTH
-   ================================ */
+    let conversation = [];
 
-function getUsers(){
-  return JSON.parse(localStorage.getItem("ohid_users") || "[]");
-}
+    function addMessage(text, sender) {
+      if (welcome) {
+        welcome.remove();
+      }
 
-function saveUsers(users){
-  localStorage.setItem("ohid_users", JSON.stringify(users));
-}
+      const message = document.createElement("div");
+      message.className = "message " + sender;
 
-function showRegister(){
-  loginPage.classList.add("hidden");
-  registerPage.classList.remove("hidden");
-}
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
 
-function showLogin(){
-  registerPage.classList.add("hidden");
-  loginPage.classList.remove("hidden");
-}
+      message.appendChild(bubble);
+      chat.appendChild(message);
 
-function register(){
-  const name = regName.value.trim();
-  const email = regEmail.value.trim().toLowerCase();
-  const pass = regPass.value;
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-  regError.textContent = "";
+    function addTyping() {
+      const message = document.createElement("div");
+      message.className = "message ai";
+      message.id = "typingMessage";
 
-  if(!name || !email || !pass){
-    regError.textContent = "সব ঘর পূরণ করো";
-    return;
-  }
+      const typing = document.createElement("div");
+      typing.className = "typing";
 
-  if(pass.length < 6){
-    regError.textContent = "Password কমপক্ষে ৬ অক্ষরের হতে হবে";
-    return;
-  }
+      typing.innerHTML = `
+        <span></span>
+        <span></span>
+        <span></span>
+      `;
 
-  const users = getUsers();
+      message.appendChild(typing);
+      chat.appendChild(message);
 
-  if(users.some(u => u.email === email)){
-    regError.textContent = "এই email দিয়ে account আছে";
-    return;
-  }
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-  users.push({name,email,pass});
-  saveUsers(users);
+    function removeTyping() {
+      const typingMessage = document.getElementById("typingMessage");
 
-  alert("Registration successful!");
-  showLogin();
-}
+      if (typingMessage) {
+        typingMessage.remove();
+      }
+    }
 
-function login(){
-  const email = loginEmail.value.trim().toLowerCase();
-  const pass = loginPass.value;
+    async function sendMessage() {
+      const text = messageInput.value.trim();
 
-  loginError.textContent = "";
+      if (!text || sendButton.disabled) {
+        return;
+      }
 
-  const user = getUsers().find(
-    u => u.email === email && u.pass === pass
-  );
+      if (
+        !GROQ_API_KEY ||
+        GROQ_API_KEY === "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"
+      ) {
+        addMessage(
+          "প্রথমে JavaScript-এর GROQ_API_KEY অংশে তোমার Groq API key বসাও।",
+          "ai"
+        );
+        return;
+      }
 
-  if(!user){
-    loginError.textContent = "Email অথবা password ভুল";
-    return;
-  }
+      addMessage(text, "user");
 
-  localStorage.setItem(
-    "ohid_current_user",
-    JSON.stringify(user)
-  );
+      conversation.push({
+        role: "user",
+        content: text
+      });
 
-  openChat(user);
-}
+      messageInput.value = "";
+      messageInput.style.height = "48px";
 
-function logout(){
-  localStorage.removeItem("ohid_current_user");
+      sendButton.disabled = true;
+      sendButton.textContent = "Wait...";
 
-  chatPage.classList.add("hidden");
-  loginPage.classList.remove("hidden");
-}
+      addTyping();
 
-function openChat(user){
-  loginPage.classList.add("hidden");
-  registerPage.classList.add("hidden");
-  chatPage.classList.remove("hidden");
+      try {
+        const response = await fetch(GROQ_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + GROQ_API_KEY
+          },
+          body: JSON.stringify({
+            model: GROQ_MODEL,
+            messages: conversation,
+            temperature: 0.7,
+            max_tokens: 1024
+          })
+        });
 
-  welcome.textContent = "Hi, " + user.name;
-  loadChat();
-}
+        const data = await response.json();
 
-const currentUser = JSON.parse(
-  localStorage.getItem("ohid_current_user") || "null"
-);
+        removeTyping();
 
-if(currentUser){
-  openChat(currentUser);
-}
+        if (!response.ok) {
+          throw new Error(
+            data.error?.message || "API request failed"
+          );
+        }
 
+        const reply =
+          data.choices?.[0]?.message?.content ||
+          "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
 
-/* ================================
-   CHAT
-   ================================ */
+        conversation.push({
+          role: "assistant",
+          content: reply
+        });
 
-let chatHistory = [];
+        addMessage(reply, "ai");
+      } catch (error) {
+        removeTyping();
 
-function loadChat(){
-  const saved = JSON.parse(
-    localStorage.getItem("ohid_chat") || "[]"
-  );
+        addMessage(
+          "Error: " + error.message,
+          "ai"
+        );
+      } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+        messageInput.focus();
+      }
+    }
 
-  chatHistory = saved;
-  renderMessages();
+    function clearChat() {
+      conversation = [];
 
-  if(chatHistory.length === 0){
-    addBotMessage("হ্যালো! আমি Ohid AI। কী জানতে চাও?");
-  }
-}
+      chat.innerHTML = `
+        <div id="welcome" class="welcome">
+          <div class="welcome-icon">🤖</div>
+          <h2>Welcome to Ohid AI</h2>
+          <p>
+            Ask me anything and start a smart conversation.
+            <br />
+            I am ready to help you.
+          </p>
+        </div>
+      `;
+    }
 
-function saveChat(){
-  localStorage.setItem(
-    "ohid_chat",
-    JSON.stringify(chatHistory)
-  );
-}
-
-function addUserMessage(text){
-  chatHistory.push({
-    role:"user",
-    content:text
-  });
-
-  renderMessages();
-  saveChat();
-}
-
-function addBotMessage(text){
-  chatHistory.push({
-    role:"assistant",
-    content:text
-  });
-
-  renderMessages();
-  saveChat();
-}
-
-function renderMessages(){
-  messages.innerHTML = "";
-
-  chatHistory.forEach(m => {
-    const div = document.createElement("div");
-
-    div.className =
-      "msg " + (m.role === "user" ? "user" : "bot");
-
-    div.textContent = m.content;
-
-    messages.appendChild(div);
-  });
-
-  messages.scrollTop = messages.scrollHeight;
-}
-
-function clearChat(){
-  chatHistory = [];
-  saveChat();
-  renderMessages();
-
-  addBotMessage("Chat cleared. আবার শুরু করি!");
-}
-
-function handleKey(e){
-  if(e.key === "Enter"){
-    sendMessage();
-  }
-}
-
-async function sendMessage(){
-
-  const text = prompt.value.trim();
-
-  if(!text) return;
-
-  if(
-    GROQ_API_KEY ===
-    "PASTE_YOUR_GROQ_API_KEY_HERE"
-  ){
-    alert("প্রথমে GROQ_API_KEY-এ তোমার API key বসাও");
-    return;
-  }
-
-  prompt.value = "";
-  addUserMessage(text);
-
-  const typing = document.createElement("div");
-
-  typing.className = "typing";
-  typing.textContent = "Ohid AI is typing...";
-
-  messages.appendChild(typing);
-  messages.scrollTop = messages.scrollHeight;
-
-  try{
-
-    const response = await fetch(GROQ_URL,{
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + GROQ_API_KEY
-      },
-
-      body:JSON.stringify({
-        model:MODEL,
-        messages:chatHistory,
-        temperature:0.7,
-        max_tokens:1024
-      })
+    messageInput.addEventListener("input", function () {
+      this.style.height = "48px";
+      this.style.height = Math.min(this.scrollHeight, 130) + "px";
     });
 
-    const data = await response.json();
+    messageInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
 
-    typing.remove();
+    sendButton.addEventListener("click", sendMessage);
+    clearButton.addEventListener("click", clearChat);
 
-    if(!response.ok){
-      throw new Error(
-        data.error?.message || "API Error"
-      );
+    for (let i = 0; i < 35; i++) {
+      const particle = document.createElement("div");
+      particle.className = "particle";
+
+      const colors = [
+        "#00ffff",
+        "#ff00cc",
+        "#8b00ff",
+        "#0066ff"
+      ];
+
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.background =
+        colors[Math.floor(Math.random() * colors.length)];
+      particle.style.boxShadow =
+        "0 0 10px " + particle.style.background;
+      particle.style.animationDuration =
+        8 + Math.random() * 14 + "s";
+      particle.style.animationDelay =
+        Math.random() * 10 + "s";
+      particle.style.width =
+        2 + Math.random() * 4 + "px";
+      particle.style.height =
+        particle.style.width;
+
+      document.body.appendChild(particle);
     }
-
-    const reply =
-      data.choices?.[0]?.message?.content;
-
-    if(!reply){
-      throw new Error("Empty response");
-    }
-
-    addBotMessage(reply);
-
-  }catch(err){
-
-    typing.remove();
-
-    addBotMessage(
-      "❌ Error: " + err.message
-    );
-
-  }
-}
-</script>
-
+  </script>
 </body>
 </html>
